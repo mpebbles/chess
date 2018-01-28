@@ -10,10 +10,40 @@ class Piece
         bool isAlive;
 };
 
-class King: public Piece {
+class King: public Piece 
+{
     public:
-        King(char s, char t, int r, int c);
+        King(char s, int r, int c);
 };
 
+class Queen: public Piece 
+{   
+    public:
+        Queen(char s, int r, int c);
+};
+
+class Rook: public Piece 
+{   
+    public:
+        Rook(char s, int r, int c);
+};
+
+class Bishop: public Piece 
+{   
+    public:
+        Bishop(char s, int r, int c);
+};
+
+class Knight: public Piece 
+{   
+    public:
+        Knight(char s, int r, int c);
+};
+
+class Pawn: public Piece 
+{   
+    public:
+        Pawn(char s, int r, int c);
+};
 
 #endif

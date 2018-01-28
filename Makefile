@@ -1,6 +1,6 @@
 CPP       = clang++ -g -O0 -Wall -Wextra -std=c++1z
 MKDEPS    = g++ -MM -std=c++1z
-MODULES   = main chess_pieces
+MODULES   = main chess_pieces utils
 HDRSRC    = ${MODULES:=.h}
 CPPSRC    = ${MODULES:=.cpp}
 EXECBIN   = main
