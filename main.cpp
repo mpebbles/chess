@@ -4,4 +4,9 @@
 
 int main() 
 {
+    Piece * board[8][8];
+    initBoard(board);
+    while(true) {
+
+    }
 }
