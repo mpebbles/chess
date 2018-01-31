@@ -4,4 +4,5 @@
 
 void initBoard(Piece* board[8][8]);
 void resetBoard(Piece* board[8][8]);
+void printBoard(Piece* board[8][8]);
 #endif

@@ -1,7 +1,9 @@
+#include <iostream>
 #include "chess_pieces.h"
 
-void initBoard(Piece* board[8][8]) {
-    // white
+void initBoard(Piece* board[8][8])
+{
+    // cyan
     board[1][0] = new Pawn('w',1,0);
     board[1][1] = new Pawn('w',1,1);
     board[1][2] = new Pawn('w',1,2);
@@ -37,6 +39,47 @@ void initBoard(Piece* board[8][8]) {
     board[7][7] = new Rook('b',7,7);
 }
 
-void resetBoard(Piece* board[8][8]) {
+void resetBoard(Piece* board[8][8])
+{
     return; // call initBoard after deleting old pieces
+}
+
+void printBoard(Piece* board[8][8])
+{
+    std::cout << std::endl;
+    for(int i = 7; i >= 0; --i) {
+        std::string color;
+        for(int j = 0; j < 8; ++j) {
+            if(i%2==0) {
+                if(j%2==0)
+                    // cyan
+                    color = "\033[36m";
+                else
+                    // blue
+                    color = "\033[34m";
+            }
+            else {
+                if(j%2==0)
+                    // blue
+                    color = "\033[34m";
+                else
+                    // cyan
+                    color = "\033[36m";
+            }
+               
+            if(board[i][j] == nullptr)
+                std::cout << color << "    *";
+            else {
+                if(board[i][j]->side == 'b')
+                    color = "\033[30m";
+                else
+                    color = "\033[37m";
+                std::cout << color << "    " << board[i][j]->type;
+            }
+        }
+        std::cout << std::endl << std::endl;
+        // change font color back to black
+        std::cout << "\033[30m";
+    }
+    std::cout << std::endl;
 }

@@ -6,7 +6,8 @@ int main()
 {
     Piece * board[8][8] = {};
     initBoard(board);
-    while(true) {
+    printBoard(board);
+    //while(true) {
 
-    }
+    //}
 }
