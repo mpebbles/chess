@@ -1,6 +1,7 @@
 #include <iostream>
 #include "chess_pieces.h"
 
+bool is_user_turn;
 void initGame(Piece* board[8][8], Piece* whitePieces[16], Piece* blackPieces[16])
 {
     // white

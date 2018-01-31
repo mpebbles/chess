@@ -7,6 +7,8 @@ class Piece
         Piece(char s, char t, int r, int c);
         // function returns true if piece moved, false if move not possible
         virtual bool move(int dest_row, int dest_col, Piece* board[8][8]);
+        static bool checkBounds(int row, int col);
+        // user side will always be white
         char side, type;
         int row, col;
         bool isAlive;
