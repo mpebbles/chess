@@ -1,7 +1,7 @@
 #include <iostream>
 #include "chess_pieces.h"
 
-Piece::Piece(char s, char t, int r, int c)
+Piece::Piece(char s, char t, int r, int c): isAlive(true)
 {
     side = s;
     type = t;
@@ -24,9 +24,12 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
     // check if piece in place
         // check if piece on same side
         // else capture piece    
-    // if move fails print why
+    // if user move (not computer) fails print why - can tell by piece being moved
+        // before above check that user is moving valid piece..(new function)
     // if captured, delete object
-    // if king verify king not in danger, move doesn't jeopardize king
+    // verify king not in danger, move doesn't jeopardize king
+ 
+    // create generate move function 
     ///////////////////////////////
 }
 //***** King *****//

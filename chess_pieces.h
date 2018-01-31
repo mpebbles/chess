@@ -9,6 +9,7 @@ class Piece
         virtual bool move(int dest_row, int dest_col, Piece* board[8][8]);
         char side, type;
         int row, col;
+        bool isAlive;
 };
 
 class King: public Piece 
