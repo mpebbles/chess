@@ -39,11 +39,7 @@ int main()
             // To implement
         }
         else if(user_in == "exit") {
-<<<<<<< HEAD
             std::cout << "Thank you for playing." << std::endl;
-=======
-            // To implement
->>>>>>> 098c91d9b38fd0010aeff33b00ce61841bcb3dd3
             exit(0);
         }
         else if(user_in == "reset") {
