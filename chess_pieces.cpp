@@ -13,7 +13,7 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 {   
     if(!checkBounds(dest_row, dest_col)) return false;
-    
+    // implement check king safety here
 
     //////// To Implement /////////
     // implemented in sub classes - calls here for reused parts
@@ -88,6 +88,26 @@ bool Knight::move(int dest_row, int dest_col, Piece* board[8][8])
 Pawn::Pawn(char s, int r, int c): Piece(s,'p', r, c) {}
 bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8]) 
 {   // TO BE IMPLEMENTED
-    
+    // still need to do white, check blocking pieces, check if at other side
+    // check right direction from starting point
+    // black
+    if(this->side=='b') {
+        // forward 1 or 2 if same col
+        if(this->row == 6 and this->col == dest_col) {
+            if(this->row - 1 != dest_row and this->row - 2 !=dest_row)
+                return false;
+        }
+        // if diag by one check for opposite team's piece
+        else if(this->col == dest_col - 1 or this->col == dest_col + 1)
+            // check that row - 1 only and piece white
+            if(this->row - 1 != dest_row or 
+               board[dest_row][dest_col] == nullptr 
+               or board[dest_row][dest_col]->side=='b')
+                return false;
+    }
+    // white
+    else {
+
+    } 
     return true;
 }

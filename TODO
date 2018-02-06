@@ -1,6 +1,7 @@
 todo list for getting started
 ------------------
 put swapping logic when pawn makes it to other side
+if swapped, have data to reset piece with game
 make interactive
 implement reset function (clean)
 check for no more possible alive moves
