@@ -1,6 +1,7 @@
 #include <iostream>
 #include "chess_pieces.h"
 #include "utils.h"
+#include <ctype.h>
 
 int main() 
 {
@@ -16,8 +17,40 @@ int main()
     Piece * whitePieces[16];
     Piece * blackPieces[16];
     initGame(board, whitePieces, blackPieces);
-    printBoard(board);
+    std::cout << "********************************************" << std::endl;
+    std::cout << "Welcome! Enter 'help' for info and commands." << std::endl; 
 
+    printBoard(board);
+    bool print_board;
+    while(true)
+    {
+        print_board = true;
+        std::cout << "white>";
+        std::string user_in;
+        std::getline(std::cin, user_in);
+        if(user_in == "help") {
+            print_board = false;
+            // To implement
+        }
+        else if(user_in.find("move") != std::string::npos and 
+                user_in.length() > 7 and isdigit(user_in.at(5)) and 
+                isdigit(user_in.at(7))) {
+            // check if move valid, if so make and print board
+            // To implement
+        }
+        else if(user_in == "exit") {
+            std::cout << "Thank you for playing." << std::endl;
+            exit(0);
+        }
+        else if(user_in == "reset") {
+            resetGame(board, whitePieces, blackPieces);
+        }
+        else {
+            print_board = false;
+            std::cout << "Invalid input. Enter 'help' for info and commands." << std::endl;
+        }
+        if(print_board) printBoard(board);
+    }
     /////// Plan ////
     // generate move function (using piece arrays)
          // Make note - dumb move function for now
@@ -28,12 +61,9 @@ int main()
     // call move on piece
     // print board
     // computer moves
+    // print out computer's move
     // alternate
     // check for win each time
-    // print x,y grid for user, swap coors for logic
 
     // have prompt, interface for commands (help, move x y, exit)
-    //while(true) {
-
-    //}
 }
