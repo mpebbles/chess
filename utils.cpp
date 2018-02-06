@@ -78,7 +78,81 @@ void initGame(Piece* board[8][8], Piece* whitePieces[16], Piece* blackPieces[16]
 
 void resetGame(Piece* board[8][8], Piece* whitePieces[16], Piece* blackPieces[16])
 {
-    return; // call initBoard after deleting old pieces
+    for(int i = 0; i < 8; ++i)
+        for(int j = 0; j < 8; ++j)
+            board[i][j] = nullptr;
+
+    // white
+
+    board[1][0] = whitePieces[15];
+    board[1][0]->row = 1; board[1][0]->col = 0; board[1][0]->isAlive = true;
+    board[1][1] = whitePieces[14];
+    board[1][1]->row = 1; board[1][1]->col = 1; board[1][1]->isAlive = true;
+    board[1][2] = whitePieces[13];
+    board[1][2]->row = 1; board[1][2]->col = 2; board[1][2]->isAlive = true;
+    board[1][3] = whitePieces[12];
+    board[1][3]->row = 1; board[1][3]->col = 3; board[1][3]->isAlive = true;
+    board[1][4] = whitePieces[11];
+    board[1][4]->row = 1; board[1][4]->col = 4; board[1][4]->isAlive = true;
+    board[1][5] = whitePieces[10];
+    board[1][5]->row = 1; board[1][5]->col = 5; board[1][5]->isAlive = true;
+    board[1][6] = whitePieces[9];
+    board[1][6]->row = 1; board[1][6]->col = 6; board[1][6]->isAlive = true;
+    board[1][7] = whitePieces[8];
+    board[1][7]->row = 1; board[1][7]->col = 7; board[1][7]->isAlive = true;
+
+    board[0][0] = whitePieces[2];
+    board[0][0]->row = 0; board[0][0]->col = 0; board[0][0]->isAlive = true;
+    board[0][1] = whitePieces[6];
+    board[0][1]->row = 0; board[0][1]->col = 1; board[0][1]->isAlive = true;
+    board[0][2] = whitePieces[4];
+    board[0][2]->row = 0; board[0][2]->col = 2; board[0][2]->isAlive = true;
+    board[0][3] = whitePieces[1];
+    board[0][3]->row = 0; board[0][3]->col = 3; board[0][3]->isAlive = true;
+    board[0][4] = whitePieces[0];
+    board[0][4]->row = 0; board[0][4]->col = 4; board[0][4]->isAlive = true;
+    board[0][5] = whitePieces[5];
+    board[0][5]->row = 0; board[0][5]->col = 5; board[0][5]->isAlive = true;
+    board[0][6] = whitePieces[7];
+    board[0][6]->row = 0; board[0][6]->col = 6; board[0][6]->isAlive = true;
+    board[0][7] = whitePieces[3];
+    board[0][7]->row = 0; board[0][7]->col = 7; board[0][7]->isAlive = true;
+    
+    // black
+    board[6][0] = blackPieces[15];
+    board[6][0]->row = 1; board[1][0]->col = 0; board[1][0]->isAlive = true;
+    board[6][1] = blackPieces[14];
+    board[6][1]->row = 1; board[1][1]->col = 1; board[1][1]->isAlive = true;
+    board[6][2] = blackPieces[13];
+    board[6][2]->row = 1; board[1][2]->col = 2; board[1][2]->isAlive = true;
+    board[6][3] = blackPieces[12];
+    board[6][3]->row = 1; board[1][3]->col = 3; board[1][3]->isAlive = true;
+    board[6][4] = blackPieces[11];
+    board[6][4]->row = 1; board[1][4]->col = 4; board[1][4]->isAlive = true;
+    board[6][5] = blackPieces[10];
+    board[6][5]->row = 1; board[1][5]->col = 5; board[1][5]->isAlive = true;
+    board[6][6] = blackPieces[9];
+    board[6][6]->row = 1; board[1][6]->col = 6; board[1][6]->isAlive = true;
+    board[6][7] = blackPieces[8];
+    board[6][7]->row = 1; board[1][7]->col = 7; board[1][7]->isAlive = true;
+
+    board[7][0] = blackPieces[2];
+    board[7][0]->row = 0; board[0][0]->col = 0; board[0][0]->isAlive = true;
+    board[7][1] = blackPieces[6];
+    board[7][1]->row = 0; board[0][1]->col = 1; board[0][1]->isAlive = true;
+    board[7][2] = blackPieces[4];
+    board[7][2]->row = 0; board[0][2]->col = 2; board[0][2]->isAlive = true;
+    board[7][3] = blackPieces[1];
+    board[7][3]->row = 0; board[0][3]->col = 3; board[0][3]->isAlive = true;
+    board[7][4] = blackPieces[0];
+    board[7][4]->row = 0; board[0][4]->col = 4; board[0][4]->isAlive = true;
+    board[7][5] = blackPieces[5];
+    board[7][5]->row = 0; board[0][5]->col = 5; board[0][5]->isAlive = true;
+    board[7][6] = blackPieces[7];
+    board[7][6]->row = 0; board[0][6]->col = 6; board[0][6]->isAlive = true;
+    board[7][7] = blackPieces[3];
+    board[7][7]->row = 0; board[0][7]->col = 7; board[0][7]->isAlive = true;
+
 }
 
 void printBoard(Piece* board[8][8])
