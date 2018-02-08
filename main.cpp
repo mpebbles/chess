@@ -32,11 +32,24 @@ int main()
             print_board = false;
             // To implement
         }
+        // move 12,34
         else if(user_in.find("move") != std::string::npos and 
-                user_in.length() > 7 and isdigit(user_in.at(5)) and 
-                isdigit(user_in.at(7))) {
-            // check if move valid, if so make and print board
-            // To implement
+                user_in.length() > 9 and isdigit(user_in.at(5)) and 
+                isdigit(user_in.at(6)) and isdigit(user_in.at(8)) 
+                and isdigit(user_in.at(9))) {
+            // get moving coors and convert to ints
+            // and swap row/col, subtract 1 from each
+            int row = user_in.at(6) - '0' - 1;
+            int col = user_in.at(5) - '0' - 1;
+            int dest_row = user_in.at(9) - '0' - 1;
+            int dest_col = user_in.at(8) - '0' - 1;
+            if(board[row][col] == nullptr or
+               board[row][col]->side == 'b')
+               std::cout << "Invalid move." << std::endl;
+            else {
+                if(!board[row][col]->move(dest_row, dest_col, board))
+                    std::cout << "Invalid move." << std::endl;
+            }
         }
         else if(user_in == "exit") {
             std::cout << "Thank you for playing." << std::endl;

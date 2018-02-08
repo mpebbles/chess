@@ -1,9 +1,12 @@
-todo list for getting started
-------------------
-put swapping logic when pawn makes it to other side
-if swapped, have data to reset piece with game
-make interactive
-implement reset function (clean)
+TODO list
+**************
+set flag for computer side
+move piece (nullptr)
+check king vulnerability
+command implementation
+implement piece moving
+swap logic — remember swap happened to reset piece to pawn (keep DS)
 check for no more possible alive moves
 check for stalemate
-much more..
+implement computer side 
+much more...

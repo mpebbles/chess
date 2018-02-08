@@ -14,6 +14,8 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 {   
     if(!checkBounds(dest_row, dest_col)) return false;
     // implement check king safety here
+    // move piece, make former space nullptr,
+    // keep former coors, check for king problem
 
     //////// To Implement /////////
     // implemented in sub classes - calls here for reused parts
@@ -28,10 +30,11 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
         // before above check that user is moving valid piece..(new function)
     // if captured, remove object from board, isAlive = false
     // verify king not in danger, move doesn't jeopardize king
- 
+    // remember to make former board spot nullptr
+    // computer final move default to moving pawns up?
     ///////////////////////////////
 
-    return false;
+    return true;
 }
 
 bool Piece::checkBounds(int row, int col)
@@ -93,9 +96,16 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
     // black
     if(this->side=='b') {
         // forward 1 or 2 if same col
-        if(this->row == 6 and this->col == dest_col) {
-            if(this->row - 1 != dest_row and this->row - 2 !=dest_row)
+        if(this->col == dest_col) {
+            if(this->row - 1 != dest_row and this->row - 2 != dest_row)
                 return false;
+            if(this->row - 1 == dest_row and 
+               board[dest_row][dest_col] != nullptr)
+               return false;
+            if(this->row == 6 and this->row - 2 == dest_row and 
+                    (board[dest_row - 1][dest_col] != nullptr
+                     or board[dest_row -2][dest_col] !=nullptr))
+                return false;          
         }
         // if diag by one check for opposite team's piece
         else if(this->col == dest_col - 1 or this->col == dest_col + 1)
@@ -104,10 +114,40 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
                board[dest_row][dest_col] == nullptr 
                or board[dest_row][dest_col]->side=='b')
                 return false;
+        // not forward or diag
+        else return false;
+        // TODO: implement for white
+        if(dest_row == 0)
+            std::cout << "Piece Swapping Not Implemented Yet" << std::endl;
     }
     // white
     else {
-
-    } 
+        if(this->col == dest_col) {
+            if(this->row + 1 != dest_row and this->row + 2 != dest_row)
+                return false;
+            if(this->row + 1 == dest_row and
+               board[dest_row][dest_col] != nullptr)
+               return false;
+            if(this->row == 1 and this->row + 2 == dest_row and 
+                    (board[dest_row + 1][dest_col] != nullptr
+                     or board[dest_row +2][dest_col] !=nullptr))
+                return false;          
+        }
+        // if diag by one check for opposite team's piece
+        else if(this->col == dest_col - 1 or this->col == dest_col + 1)
+            // check that row + 1 only and piece black 
+            if(this->row + 1 != dest_row or 
+               board[dest_row][dest_col] == nullptr
+               or board[dest_row][dest_col]->side=='w')
+                return false;
+        // not forward or diag
+        else return false;
+       
+        // TODO: implement for white
+        if(dest_row == 7)
+            std::cout << "Piece Swapping Not Implemented Yet" << std::endl;
+    }
+    // call parent
+    if(!Piece::move(dest_row, dest_col, board)) return false;
     return true;
 }
