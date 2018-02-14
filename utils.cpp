@@ -161,7 +161,7 @@ void printBoard(Piece* board[8][8])
     for(int i = 7; i >= 0; --i) {
         std::string color;
  
-        std::cout << "  " << i + 1 << "|";
+        std::cout << "\033[30m  " << i + 1 << "|";
         for(int j = 0; j < 8; ++j) {
             if(i%2==0) {
                 if(j%2==0)

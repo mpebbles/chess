@@ -12,7 +12,12 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 {   
-    if(!checkBounds(dest_row, dest_col)) return false;
+   // check that move is to nullptr or piece of opposite color
+   if(board[dest_row][dest_col] != nullptr
+      and board[dest_row][dest_col]->side  == this->side) 
+       return false;
+
+    //if(!checkBounds(dest_row, dest_col)) return false;
     // implement check king safety here
     // move piece, make former space nullptr,
     // keep former coors, check for king problem
@@ -83,16 +88,36 @@ bool Bishop::move(int dest_row, int dest_col, Piece* board[8][8])
 Knight::Knight(char s, int r, int c): Piece(s,'k', r, c) {}
 bool Knight::move(int dest_row, int dest_col, Piece* board[8][8]) 
 {
-    // TO BE IMPLEMENTED
-    return false;
+    if(!checkBounds(dest_row, dest_col)) return false;
+    // the following is strucuted as so for readability
+    // up
+    else if(this->row + 1 == dest_row and this->col == dest_col) {}
+    // down
+    else if(this->row - 1 == dest_row and this->col == dest_col) {}
+    // right
+    else if(this->row == dest_row and this->col + 1 == dest_col) {}
+    // left
+    else if(this->row == dest_row and this->col - 1 == dest_col) {}
+    // up-left
+    else if(this->row + 1 == dest_row and this->col - 1 == dest_col) {}
+    // up-right
+    else if(this->row + 1 == dest_row and this->col + 1 == dest_col) {}
+    // down-left
+    else if(this->row - 1 == dest_row and this->col - 1 == dest_col) {}
+    // down-right
+    else if(this->row - 1 == dest_row and this->col + 1 == dest_col) {}
+    else return false;
+
+    // call parent
+    if(!Piece::move(dest_row, dest_col, board)) return false;
+    return true;
 }
 
 //***** Pawn *****//
 Pawn::Pawn(char s, int r, int c): Piece(s,'p', r, c) {}
 bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8]) 
-{   // TO BE IMPLEMENTED
-    // still need to do white, check blocking pieces, check if at other side
-    // check right direction from starting point
+{
+    if(!checkBounds(dest_row, dest_col)) return false;
     // black
     if(this->side=='b') {
         // forward 1 or 2 if same col
