@@ -13,12 +13,21 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 {  
     if(!checkBounds(dest_row, dest_col)) return false; 
-    // check that move is to nullptr or piece of opposite color
-    if(board[dest_row][dest_col] != nullptr
-       and board[dest_row][dest_col]->side  == this->side) 
-        return false;
 
-    // WORKING HERE -- next: implement move piece on board
+    int old_row = this->row;
+    int old_col = this->col;
+    if(board[dest_row][dest_col] == nullptr) {
+        board[dest_row][dest_col] = this;
+        this->row = dest_row; 
+        this->col = dest_col;
+        board[old_row][old_col] = nullptr;
+    }
+    // capture
+    else if(board[dest_row][dest_col]->side != this->side){
+        // to implement
+    }
+    // error
+    else return false;
 
     // implement check king safety here
     // move piece, make former space nullptr,
@@ -52,25 +61,25 @@ bool Piece::checkDiag(int dest_row, int dest_col, Piece* board[8][8])
     // check no pieces blocking
     // up right
     if(this->row < dest_row and this->col < dest_col) {
-        for(int i = 0; i + this->row < dest_row; ++i)
+        for(int i = 1; i + this->row < dest_row; ++i)
             if(board[this->row + i][this->col + i] != nullptr)
                 return false;
     }
     // up left
     else if(this->row < dest_row and this->col > dest_col) {
-        for(int i = 0; i + this->row < dest_row; ++i)
+        for(int i = 1; i + this->row < dest_row; ++i)
             if(board[this->row + i][this->col - i] != nullptr)
                 return false;
     }
     // down right
     else if(this->row > dest_row and this->col < dest_col) {
-        for(int i = 0; i + this->col < dest_col; ++i)
+        for(int i = 1; i + this->col < dest_col; ++i)
             if(board[this->row - i][this->col + i] != nullptr)
                 return false;
     }
     // down left
     else if(this->row > dest_row and this->col > dest_col) {
-        for(int i = 0; i + this->row > dest_row; --i)
+        for(int i = -1; i + this->row > dest_row; --i)
             if(board[this->row + i][this->col + i] != nullptr)
                 return false;
     }
@@ -85,14 +94,14 @@ bool Piece::checkUpDownLeftRight(int dest_row, int dest_col, Piece* board[8][8])
     if(this->row == dest_row and this->col != dest_col) {
         // left
         if(this->col < dest_col) {
-            for(int i = 0; i + this->col < dest_col; ++i)
+            for(int i = 1; i + this->col < dest_col; ++i)
                 if(board[this->row][i + this->col] != nullptr) {
                     return false;
                 }
         }
         // right
         else if(this->col > dest_col) {
-            for(int i = 0; i + this->col > dest_col; --i)
+            for(int i = -1; i + this->col > dest_col; --i)
                 if(board[this->row][i+this->col] != nullptr)
                     return false;
         }
@@ -101,13 +110,13 @@ bool Piece::checkUpDownLeftRight(int dest_row, int dest_col, Piece* board[8][8])
     else if(this->row != dest_row and this->col == dest_col) {
         //up
         if(this->row < dest_row) {
-            for(int i = 0; i + this->row < dest_row; ++i)
+            for(int i = 1; i + this->row < dest_row; ++i)
                 if(board[this->row + i][this->col] != nullptr)
                     return false;
         }
         // down
         else if(this->row > dest_row) {
-            for(int i = 0; i + this->row > dest_row; --i)
+            for(int i = -1; i + this->row > dest_row; --i)
                 if(board[this->row + i][this->col] != nullptr)
                     return false;
         }
