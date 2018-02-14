@@ -11,13 +11,13 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 }
 
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
-{   
-   // check that move is to nullptr or piece of opposite color
-   if(board[dest_row][dest_col] != nullptr
-      and board[dest_row][dest_col]->side  == this->side) 
-       return false;
+{  
+    if(!checkBounds(dest_row, dest_col)) return false; 
+    // check that move is to nullptr or piece of opposite color
+    if(board[dest_row][dest_col] != nullptr
+       and board[dest_row][dest_col]->side  == this->side) 
+        return false;
 
-    //if(!checkBounds(dest_row, dest_col)) return false;
     // implement check king safety here
     // move piece, make former space nullptr,
     // keep former coors, check for king problem
@@ -56,42 +56,9 @@ bool Piece::checkBounds(int row, int col)
 King::King(char s, int r, int c): Piece(s,'K', r, c) {}
 bool King::move(int dest_row, int dest_col, Piece* board[8][8])
 {
-    // TO BE IMPLEMENTED
-    return false;
-}
-
-//***** Queen *****//
-Queen::Queen(char s, int r, int c): Piece(s,'q', r, c) {}
-bool Queen::move(int dest_row, int dest_col, Piece* board[8][8]) 
-{
-    // TO BE IMPLEMENTED
-    return false;
-}
-
-//***** Rook *****//
-Rook::Rook(char s, int r, int c): Piece(s,'r', r, c) {}
-bool Rook::move(int dest_row, int dest_col, Piece* board[8][8]) 
-{
-    // TO BE IMPLEMENTED
-    return false;
-}
-
-//***** Bishop *****//
-Bishop::Bishop(char s, int r, int c): Piece(s,'b', r, c) {}
-bool Bishop::move(int dest_row, int dest_col, Piece* board[8][8]) 
-{
-    // TO BE IMPLEMENTED
-    return false;
-}
-
-//***** Knight *****//
-Knight::Knight(char s, int r, int c): Piece(s,'k', r, c) {}
-bool Knight::move(int dest_row, int dest_col, Piece* board[8][8]) 
-{
-    if(!checkBounds(dest_row, dest_col)) return false;
-    // the following is strucuted as so for readability
-    // up
-    else if(this->row + 1 == dest_row and this->col == dest_col) {}
+    //if(!checkBounds(dest_row, dest_col)) return false;
+    // TODO structure like knight    
+    if(this->row + 1 == dest_row and this->col == dest_col) {}
     // down
     else if(this->row - 1 == dest_row and this->col == dest_col) {}
     // right
@@ -113,10 +80,67 @@ bool Knight::move(int dest_row, int dest_col, Piece* board[8][8])
     return true;
 }
 
+//***** Queen *****//
+Queen::Queen(char s, int r, int c): Piece(s,'q', r, c) {}
+bool Queen::move(int dest_row, int dest_col, Piece* board[8][8]) 
+{
+    // TO BE IMPLEMENTED
+    // check for blocking pieces
+    return false;
+}
+
+//***** Rook *****//
+Rook::Rook(char s, int r, int c): Piece(s,'r', r, c) {}
+bool Rook::move(int dest_row, int dest_col, Piece* board[8][8]) 
+{
+    // TO BE IMPLEMENTED
+    // check for blocking pieces
+    return false;
+}
+
+//***** Bishop *****//
+Bishop::Bishop(char s, int r, int c): Piece(s,'b', r, c) {}
+bool Bishop::move(int dest_row, int dest_col, Piece* board[8][8]) 
+{
+    // TO BE IMPLEMENTED
+    // check for blocking pieces
+    return false;
+}
+
+//***** Knight *****//
+Knight::Knight(char s, int r, int c): Piece(s,'k', r, c) {}
+bool Knight::move(int dest_row, int dest_col, Piece* board[8][8]) 
+{
+    //if(!checkBounds(dest_row, dest_col)) return false;
+    if(!(
+         // up 2, right one
+         (this->row + 2 == dest_row and this->col + 1 == dest_col) or 
+         // up 2, left one
+         (this->row + 2 == dest_row and this->col - 1 == dest_col) or
+         // up 1, right 2
+         (this->row + 1 == dest_row and this->col + 2 == dest_col) or
+         // up 1, left 2
+         (this->row + 1 == dest_row and this->col - 2 == dest_col) or
+         // down 2, right one
+         (this->row - 2 == dest_row and this->col + 1 == dest_col) or
+         // down 2, left one
+         (this->row - 2 == dest_row and this->col - 1 == dest_col) or
+         // down 1, right 2
+         (this->row - 1 == dest_row and this->col + 2 == dest_col) or
+         // down 1, left 2
+         (this->row - 1 == dest_row and this->col - 2 == dest_col)
+      )) return false;
+    // call parent
+    if(!Piece::move(dest_row, dest_col, board)) return false;
+    return true;
+}
+
 //***** Pawn *****//
 Pawn::Pawn(char s, int r, int c): Piece(s,'p', r, c) {}
 bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8]) 
 {
+    // check bounds included so that below won't break when board coors accessed
+    // TODO: put checking of board for nulltpr/opposite team into parent
     if(!checkBounds(dest_row, dest_col)) return false;
     // black
     if(this->side=='b') {
