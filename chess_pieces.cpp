@@ -16,20 +16,23 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 
     int old_row = this->row;
     int old_col = this->col;
-    if(board[dest_row][dest_col] == nullptr) {
-        board[dest_row][dest_col] = this;
-        this->row = dest_row; 
-        this->col = dest_col;
-        board[old_row][old_col] = nullptr;
-    }
+    Piece * cap_piece_ref;
+    if(board[dest_row][dest_col] == nullptr) {}
     // capture
     else if(board[dest_row][dest_col]->side != this->side){
-        // to implement
+        cap_piece_ref = board[dest_row][dest_col];
+        cap_piece_ref->isAlive = false;
     }
     // error
     else return false;
+    // move piece
+    board[dest_row][dest_col] = this;
+    board[old_row][old_col] = nullptr;
+    this->row = dest_row;
+    this->col = dest_row;
 
-    // implement check king safety here
+
+    // implement check king (of mover's side) safety here
     // move piece, make former space nullptr,
     // keep former coors, check for king problem
     // implement capture
