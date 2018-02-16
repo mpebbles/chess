@@ -2,6 +2,9 @@
 #include "chess_pieces.h"
 
 bool is_user_turn;
+bool computer_in_check;
+bool user_in_check;
+
 void initGame(Piece* board[8][8], Piece* whitePieces[16], Piece* blackPieces[16])
 {
     // white

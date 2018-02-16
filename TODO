@@ -3,6 +3,21 @@ TODO list
 check for stalemate
 check for check
 check for checkmate
-implement commands/instructions (reset, help, etc)
+
+print results of above/ask if wants to play again/reset or exit
+
 implement piece swapping for pawns--remember swap and reset piece to pawn at end
 implement computer side
+handle when user/computer in check -- verify resolved
+    -- check in_check flag for both sides
+
+    /////// Plan ////
+    // implement computer move function (using piece arrays)
+         // Make note - dumb move function for now
+           //1. Doesn’t harm king
+           //2. Can capture best piece
+           //3. Just make valid move if needed
+    // call move on piece
+    // print board
+    // computer moves
+    // print out computer's move

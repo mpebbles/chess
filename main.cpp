@@ -6,6 +6,9 @@
 int main() 
 {
     is_user_turn = true;
+    computer_in_check = false;
+    user_in_check = false;
+    bool game_reset = false;
     Piece * board[8][8] = {};
 
     // whitePieces/blackPieces ordered by importance (high -> low) 
@@ -37,7 +40,12 @@ int main()
             std::getline(std::cin, user_in);
             if(user_in == "help") {
                 print_board = false;
-                // To implement
+                std::cout << "\nImplemented by Mitchell Pebbles (2018).\n" 
+                          << "To move a piece enter: 'move x1y1 x2y2' with x1y1\n"
+                          << "    being the piece's current position, and x2y2 being\n"
+                          << "    the desired destination.\n"
+                          << "To exit enter 'exit'.\n"
+                          << "To reset game enter 'reset'.\n" << std::endl;
             }
             // move 12,34
             else if(user_in.find("move") != std::string::npos and 
@@ -54,8 +62,11 @@ int main()
                    board[row][col]->side == 'b')
                    std::cout << "Invalid move." << std::endl;
                 else {
-                    if(!board[row][col]->move(dest_row, dest_col, board))
+                    if(!board[row][col]->move(dest_row, dest_col, board)) {
                         std::cout << "Invalid move." << std::endl;
+                        is_user_turn = true;
+                    }
+                    else is_user_turn = false;
                 }
             }
             else if(user_in == "exit") {
@@ -63,38 +74,40 @@ int main()
                 exit(0);
             }
             else if(user_in == "reset") {
+                game_reset = true;
                 resetGame(board, whitePieces, blackPieces);
             }
             else {
                 print_board = false;
                 std::cout << "Invalid input. Enter 'help' for info and commands." << std::endl;
             }
-            if(print_board) { 
+            if(print_board)
                 printBoard(board);
-                // user moved
-                is_user_turn = false;
-            }
         }
         // !is_user_turn is side that just went
-        // check for check
-        // ...
-        // check for checkmate
-        // ...
-        // check for stalemate
-        // ...
+        // check for check, checkmate, stalemate
+        if(!game_reset) {
+            if(is_user_turn and print_board) {
+                if(!whitePieces[0]->isSafe(board)) {
+                    // Check for checkmate
+                    // if checkmate reset game -- remember extra DS when implemented for piece swap
+                    // ...
+                    user_in_check = true;
+                    std::cout << "Your King is in check. You must resolve this." << std::endl;
+                }
+                // check for stalemate
+               // ...
+            }
+            // check black side
+            else {
+                if(!blackPieces[0]->isSafe(board)) {
+                    // Check for checkmate
+                    // ...
+                    computer_in_check = true;
+                }
+                // check for stalemate
+                // ...
+            }
+        } else { game_reset = false; is_user_turn = true; }
     }
-    /////// Plan ////
-    // generate move function (using piece arrays)
-         // Make note - dumb move function for now
-           //1. Doesn’t harm king
-           //2. Can capture best piece
-           //3. Just make valid move if needed
-    // call move on piece
-    // print board
-    // computer moves
-    // print out computer's move
-    // alternate
-    // check for win each time
-
-    // have prompt, interface for commands (help, move x y, exit)
 }

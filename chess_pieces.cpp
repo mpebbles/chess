@@ -58,7 +58,6 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 
 bool Piece::checkKingSafe(Piece* board[8][8])
 {
-    checking_move = true;
     int k_row, k_col;
     // get king coors
     for(int i = 0; i < 7; ++i)
@@ -70,20 +69,7 @@ bool Piece::checkKingSafe(Piece* board[8][8])
                break;
             }
         }
-    // check if opposing pieces can attack king
-    for(int i = 0; i < 7; ++i)
-        for(int j = 0; j < 7; ++j) {
-            if(board[i][j] != nullptr and 
-               board[i][j]->side != this->side) {
-                if(board[i][j]->move(k_row, k_col, board)) {
-                    checking_move = false;
-                    // invalid move, king in jeopardy
-                    return false;
-                }
-            }
-        }
-    checking_move = false;
-    return true;
+    return board[k_row][k_col]->isSafe(board);
 }
 
 bool Piece::checkBounds(int row, int col)
@@ -168,6 +154,26 @@ bool Piece::checkUpDownLeftRight(int dest_row, int dest_col, Piece* board[8][8])
     return true;
 }
 
+// assumes this is King
+bool Piece::isSafe(Piece* board[8][8])
+{
+    // check if opposing pieces can attack king
+    checking_move = true;
+    for(int i = 0; i < 7; ++i)
+        for(int j = 0; j < 7; ++j) {
+            if(board[i][j] != nullptr and
+               board[i][j]->side != this->side) {
+                if(board[i][j]->move(this->row, this->col, board)) {
+                    checking_move = false;
+                    // invalid move, king in jeopardy
+                    return false;
+                }   
+            }   
+        }   
+    checking_move = false;
+    return true;
+}
+
 //***** King *****//
 King::King(char s, int r, int c): Piece(s,'K', r, c) {}
 bool King::move(int dest_row, int dest_col, Piece* board[8][8])
@@ -215,6 +221,8 @@ Rook::Rook(char s, int r, int c): Piece(s,'r', r, c) {}
 bool Rook::move(int dest_row, int dest_col, Piece* board[8][8]) 
 {
     if(!Piece::checkUpDownLeftRight(dest_row, dest_col, board)) return false;
+    // call parent
+    if(!Piece::move(dest_row, dest_col, board)) return false;
     return true;
 }
 
@@ -288,7 +296,7 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
         }
         // not forward or diag
         else {return false;}
-        // TODO: implement for white
+        // TODO: implement for black
         if(dest_row == 0)
             std::cout << "Piece Swapping Not Implemented Yet" << std::endl;
     }
