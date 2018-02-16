@@ -5,7 +5,7 @@
 
 int main() 
 {
-    is_user_turn = false;
+    is_user_turn = true;
     Piece * board[8][8] = {};
 
     // whitePieces/blackPieces ordered by importance (high -> low) 
@@ -23,46 +23,65 @@ int main()
     printBoard(board);
     bool print_board;
     while(true)
-    {
-        print_board = true;
-        std::cout << "white>";
-        std::string user_in;
-        std::getline(std::cin, user_in);
-        if(user_in == "help") {
-            print_board = false;
-            // To implement
-        }
-        // move 12,34
-        else if(user_in.find("move") != std::string::npos and 
-                user_in.length() > 9 and isdigit(user_in.at(5)) and 
-                isdigit(user_in.at(6)) and isdigit(user_in.at(8)) 
-                and isdigit(user_in.at(9))) {
-            // get moving coors and convert to ints
-            // and swap row/col, subtract 1 from each
-            int row = user_in.at(6) - '0' - 1;
-            int col = user_in.at(5) - '0' - 1;
-            int dest_row = user_in.at(9) - '0' - 1;
-            int dest_col = user_in.at(8) - '0' - 1;
-            if(board[row][col] == nullptr or
-               board[row][col]->side == 'b')
-               std::cout << "Invalid move." << std::endl;
+    {  
+       if(!is_user_turn) {
+           // ...
+           std::cout << "Computer moves here..." << std::endl;
+           is_user_turn = true;
+           printBoard(board);
+       }
+       else {
+            print_board = true;
+            std::cout << "white>";
+            std::string user_in;
+            std::getline(std::cin, user_in);
+            if(user_in == "help") {
+                print_board = false;
+                // To implement
+            }
+            // move 12,34
+            else if(user_in.find("move") != std::string::npos and 
+                    user_in.length() > 9 and isdigit(user_in.at(5)) and 
+                    isdigit(user_in.at(6)) and isdigit(user_in.at(8)) 
+                    and isdigit(user_in.at(9))) {
+                // get moving coors and convert to ints
+                // and swap row/col, subtract 1 from each
+                int row = user_in.at(6) - '0' - 1;
+                int col = user_in.at(5) - '0' - 1;
+                int dest_row = user_in.at(9) - '0' - 1;
+                int dest_col = user_in.at(8) - '0' - 1;
+                if(board[row][col] == nullptr or
+                   board[row][col]->side == 'b')
+                   std::cout << "Invalid move." << std::endl;
+                else {
+                    if(!board[row][col]->move(dest_row, dest_col, board))
+                        std::cout << "Invalid move." << std::endl;
+                }
+            }
+            else if(user_in == "exit") {
+                std::cout << "Thank you for playing." << std::endl;
+                exit(0);
+            }
+            else if(user_in == "reset") {
+                resetGame(board, whitePieces, blackPieces);
+            }
             else {
-                if(!board[row][col]->move(dest_row, dest_col, board))
-                    std::cout << "Invalid move." << std::endl;
+                print_board = false;
+                std::cout << "Invalid input. Enter 'help' for info and commands." << std::endl;
+            }
+            if(print_board) { 
+                printBoard(board);
+                // user moved
+                is_user_turn = false;
             }
         }
-        else if(user_in == "exit") {
-            std::cout << "Thank you for playing." << std::endl;
-            exit(0);
-        }
-        else if(user_in == "reset") {
-            resetGame(board, whitePieces, blackPieces);
-        }
-        else {
-            print_board = false;
-            std::cout << "Invalid input. Enter 'help' for info and commands." << std::endl;
-        }
-        if(print_board) printBoard(board);
+        // !is_user_turn is side that just went
+        // check for check
+        // ...
+        // check for checkmate
+        // ...
+        // check for stalemate
+        // ...
     }
     /////// Plan ////
     // generate move function (using piece arrays)
@@ -70,7 +89,6 @@ int main()
            //1. Doesn’t harm king
            //2. Can capture best piece
            //3. Just make valid move if needed
-    // check that user selected their own piece, not nullptr or computer's piece
     // call move on piece
     // print board
     // computer moves

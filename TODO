@@ -1,13 +1,8 @@
 TODO list
 **************
-if King taken end
-set flag for computer side
-move piece (nullptr)
-check king vulnerability
-command implementation
-implement piece moving
-swap logic — remember swap happened to reset piece to pawn (keep DS)
-check for no more possible alive moves
 check for stalemate
-implement computer side 
-much more...
+check for check
+check for checkmate
+implement commands/instructions (reset, help, etc)
+implement piece swapping for pawns--remember swap and reset piece to pawn at end
+implement computer side

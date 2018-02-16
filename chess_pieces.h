@@ -10,7 +10,8 @@ class Piece
         static bool checkBounds(int row, int col);
         bool checkDiag(int dest_row, int dest_col, Piece* board[8][8]);
         bool checkUpDownLeftRight(int dest_row, int dest_col, Piece* board[8][8]);
-        
+        bool checkKingSafe(Piece* board[8][8]);
+ 
         // user side will always be white
         char side, type;
         int row, col;

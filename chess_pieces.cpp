@@ -2,6 +2,12 @@
 #include "chess_pieces.h"
 #include "utils.h"
 
+// bad coding, I know
+// checking_move is so that piece is not actually moved when
+//    checkKingSafe() is testing for pieces being able to attack King
+//    when true piece won't be moved
+bool checking_move = false;
+
 Piece::Piece(char s, char t, int r, int c): isAlive(true)
 {
     side = s;
@@ -11,7 +17,9 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 }
 
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
-{  
+{   
+    // if check is happening, don't actually move piece
+    if(checking_move) return true;
     if(!checkBounds(dest_row, dest_col)) return false; 
 
     int old_row = this->row;
@@ -31,18 +39,50 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
     this->row = dest_row;
     this->col = dest_row;
 
+    // check safety of mover's king
+    if(!checkKingSafe(board)) {
+        board[old_row][old_col] = this;
+        if(cap_piece_ref != nullptr) {
+            board[dest_row][dest_col] = cap_piece_ref;
+            cap_piece_ref->isAlive = true;
+        } 
+        else 
+            board[dest_row][dest_col] = nullptr;
+        this->row = old_row;
+        this->col = old_col;
+        return false;
+    }
+    // if execution gets here, move is valid
+    return true;
+}
 
-    // implement check king (of mover's side) safety here
-    // move piece, make former space nullptr,
-    // keep former coors, check for king problem
-    // implement capture
-
-    // check if spot empty, if so move
-    // if captured, remove object from board, isAlive = false
-    // verify king not in danger, move doesn't jeopardize king
-    // remember to make former board spot nullptr
-    // computer final move default to moving pawns up?
-
+bool Piece::checkKingSafe(Piece* board[8][8])
+{
+    checking_move = true;
+    int k_row, k_col;
+    // get king coors
+    for(int i = 0; i < 7; ++i)
+        for(int j = 0; j < 7; ++j) {
+            if(board[i][j] != nullptr and
+               board[i][j]->type == 'K' and
+               board[i][j]->side == this->side) {
+               k_row = i; k_col = j;
+               break;
+            }
+        }
+    // check if opposing pieces can attack king
+    for(int i = 0; i < 7; ++i)
+        for(int j = 0; j < 7; ++j) {
+            if(board[i][j] != nullptr and 
+               board[i][j]->side != this->side) {
+                if(board[i][j]->move(k_row, k_col, board)) {
+                    checking_move = false;
+                    // invalid move, king in jeopardy
+                    return false;
+                }
+            }
+        }
+    checking_move = false;
     return true;
 }
 
