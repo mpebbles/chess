@@ -12,7 +12,8 @@ class Piece
         bool checkUpDownLeftRight(int dest_row, int dest_col, Piece* board[8][8]);
         bool checkKingSafe(Piece* board[8][8]);
         bool isSafe(Piece* board[8][8]);
- 
+        std::pair<int, int> findKingMove(Piece* board[8][8]);
+
         // user side will always be white
         char side, type;
         int row, col;

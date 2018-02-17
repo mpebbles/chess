@@ -1,9 +1,48 @@
 #include <iostream>
 #include "chess_pieces.h"
+#include "utils.h"
 
 bool is_user_turn;
 bool computer_in_check;
 bool user_in_check;
+int threat_row, threat_col;
+
+bool isCheckMate(Piece * pieces[16], Piece* board[8][8])
+{
+    // ...
+    return false;
+}
+
+void getAnswer(Piece* whitePieces[16], Piece* blackPieces[16], Piece* board[8][8])
+{
+    std::string user_ans;
+    std::getline(std::cin, user_ans);
+    if(user_ans.find("y") != std::string::npos)
+        resetGame(board, whitePieces, blackPieces);
+    else {
+        std::cout << "Thank you for playing." << std::endl;
+        exit(0);
+    }
+    printBoard(board);
+}
+
+void userWin(Piece * whitePieces[16], Piece* blackPieces[16], Piece* board[8][8]) 
+{
+    std::cout << "You won! Play again? (y/n): ";
+    getAnswer(whitePieces, blackPieces, board);
+}
+
+void userLoss(Piece * whitePieces[16], Piece* blackPieces[16], Piece* board[8][8]) 
+{
+    std::cout << "The computer won. Play again? (y/n): ";
+    getAnswer(whitePieces, blackPieces, board);
+}
+
+void gameStalemate(Piece * whitePieces[16], Piece* blackPieces[16], Piece* board[8][8])
+{   
+    std::cout << "It's a stalemate. Play again? (y/n): ";
+    getAnswer(whitePieces, blackPieces, board);
+}
 
 void initGame(Piece* board[8][8], Piece* whitePieces[16], Piece* blackPieces[16])
 {

@@ -18,6 +18,7 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 {   
+    if(dest_row == this->row and dest_col == this->col) return false;
     // if check is happening, don't actually move piece
     if(checking_move) return true;
     if(!checkBounds(dest_row, dest_col)) return false; 
@@ -53,7 +54,16 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
         return false;
     }
     // if execution gets here, move is valid
-    return true;
+   if(is_user_turn and user_in_check) user_in_check = false; 
+   if(!is_user_turn and computer_in_check) computer_in_check = false;
+   return true;
+}
+
+std::pair<int, int> Piece::findKingMove(Piece* board[8][8])
+{
+    // ...
+    // check not vulnerable in new spot if one exists
+    return std::make_pair(0, -1);
 }
 
 bool Piece::checkKingSafe(Piece* board[8][8])
@@ -165,6 +175,9 @@ bool Piece::isSafe(Piece* board[8][8])
                board[i][j]->side != this->side) {
                 if(board[i][j]->move(this->row, this->col, board)) {
                     checking_move = false;
+                    // extern vars
+                    threat_row = i;
+                    threat_col = j;
                     // invalid move, king in jeopardy
                     return false;
                 }   

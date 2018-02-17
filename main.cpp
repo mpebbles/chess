@@ -10,7 +10,9 @@ int main()
     user_in_check = false;
     bool game_reset = false;
     Piece * board[8][8] = {};
-
+    // for checking stalemate
+    int k_move_row;
+    int k_move_col;
     // whitePieces/blackPieces ordered by importance (high -> low) 
     //    -for easy implementation,
     //    -not literal importance in game
@@ -25,6 +27,7 @@ int main()
 
     printBoard(board);
     bool print_board;
+    std::string user_in;
     while(true)
     {  
        if(!is_user_turn) {
@@ -36,7 +39,6 @@ int main()
        else {
             print_board = true;
             std::cout << "white>";
-            std::string user_in;
             std::getline(std::cin, user_in);
             if(user_in == "help") {
                 print_board = false;
@@ -84,25 +86,34 @@ int main()
             if(print_board)
                 printBoard(board);
         }
-        // !is_user_turn is side that just went
+        // !is_user_turn is side that just went, check following before turn given
         // check for check, checkmate, stalemate
         if(!game_reset) {
             if(is_user_turn and print_board) {
                 if(!whitePieces[0]->isSafe(board)) {
+                    // if exececution here, threat_row and threat_col have current vals
                     // Check for checkmate
                     // if checkmate reset game -- remember extra DS when implemented for piece swap
-                    // ...
-                    user_in_check = true;
-                    std::cout << "Your King is in check. You must resolve this." << std::endl;
+                    if(isCheckMate(whitePieces, board)) {
+                        userLoss(whitePieces, blackPieces, board);
+                    } else {
+                        // if not checkmate
+                        user_in_check = true;
+                        // move function will check king safety -- move is invalid unless King safe
+                        std::cout << "Your King is in check. You must resolve this." << std::endl;
+                    }
                 }
                 // check for stalemate
-               // ...
+                std::tie(k_move_row, k_move_col) = whitePieces[0]->findKingMove(board);
+                if(k_move_row == -1 and k_move_col == -1)
+                    gameStalemate(whitePieces, blackPieces, board);
             }
             // check black side
             else {
                 if(!blackPieces[0]->isSafe(board)) {
                     // Check for checkmate
                     // ...
+                    // if not checkmate
                     computer_in_check = true;
                 }
                 // check for stalemate
