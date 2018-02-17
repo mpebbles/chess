@@ -1,2 +1,5 @@
 # chess
-Implementation slowly in progress.
+Terminal chess game. No intelligence yet. 
+For now the computer makes a valid, unplanned move. 
+Piece promotion not implemented yet. 
+

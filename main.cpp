@@ -1,7 +1,8 @@
 #include <iostream>
+#include <ctype.h>
 #include "chess_pieces.h"
 #include "utils.h"
-#include <ctype.h>
+#include "computer_side.h"
 
 int main() 
 {
@@ -27,14 +28,18 @@ int main()
 
     printBoard(board);
     bool print_board;
+    bool computer_moved = false;
     std::string user_in;
     while(true)
     {  
        if(!is_user_turn) {
-           // ...
-           std::cout << "Computer moves here..." << std::endl;
-           is_user_turn = true;
-           printBoard(board);
+           computer_moved = makeMove(blackPieces, board);
+           if(computer_moved) {
+               printBoard(board);
+               is_user_turn = true;
+           }
+           else 
+               std::cout << "Computer was unable to move." << std::endl;
        }
        else {
             print_board = true;

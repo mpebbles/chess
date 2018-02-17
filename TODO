@@ -1,16 +1,6 @@
 TODO list
 **************
-implement piece swapping for pawns--remember swap and reset piece to pawn at end
-implement computer side
-handle when user/computer in check -- verify resolved
-    -- check in_check flag for both sides
-
-    /////// Plan ////
-    // implement computer move function (using piece arrays)
-         // Make note - dumb move function for now
-           //1. Doesn’t harm king
-           //2. Can capture best piece
-           //3. Just make valid move if needed
-           //4. get all possible moves, assign number, pick best move
-    // call move on piece
-    // print out what computer did 
+implement piece promotion for pawns
+   --remember promotion and reset piece to pawn at end
+implement intelligence
+   -- get all possible moves, assign value, pick best

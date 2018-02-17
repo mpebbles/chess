@@ -19,12 +19,11 @@ Piece::Piece(char s, char t, int r, int c): isAlive(true)
 }
 
 bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
-{   
+{ 
     if(dest_row == this->row and dest_col == this->col) return false;
     // if check is happening, don't actually move piece
     if(checking_move) return true;
     if(!checkBounds(dest_row, dest_col)) return false; 
-
     int old_row = this->row;
     int old_col = this->col;
     Piece * cap_piece_ref;
@@ -131,8 +130,8 @@ bool Piece::checkKingSafe(Piece* board[8][8])
 {
     int k_row, k_col;
     // get king coors
-    for(int i = 0; i < 7; ++i)
-        for(int j = 0; j < 7; ++j) {
+    for(int i = 0; i < 8; ++i)
+        for(int j = 0; j < 8; ++j) {
             if(board[i][j] != nullptr and
                board[i][j]->type == 'K' and
                board[i][j]->side == this->side) {
@@ -374,7 +373,7 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
         else {return false;}
         // TODO: implement for black
         if(dest_row == 0)
-            std::cout << "Piece Swapping Not Implemented Yet" << std::endl;
+            std::cout << "Piece promotion not implemented yet" << std::endl;
     }
     // white
     else {
@@ -402,7 +401,7 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
        
         // TODO: implement for white
         if(dest_row == 7)
-            std::cout << "Piece Swapping Not Implemented Yet" << std::endl;
+            std::cout << "Piece promotion not implemented yet" << std::endl;
     }
     // call parent
     if(!Piece::move(dest_row, dest_col, board)) return false;
