@@ -104,9 +104,11 @@ int main()
                     }
                 }
                 // check for stalemate
-                std::tie(k_move_row, k_move_col) = whitePieces[0]->findKingMove(board);
-                if(k_move_row == -1 and k_move_col == -1)
-                    gameStalemate(whitePieces, blackPieces, board);
+                if(onlyKingLeft(whitePieces)) {
+                    std::tie(k_move_row, k_move_col) = whitePieces[0]->findKingMove(board);
+                    if(k_move_row == -1 and k_move_col == -1)
+                        gameStalemate(whitePieces, blackPieces, board);
+                }
             }
             // check black side
             else {

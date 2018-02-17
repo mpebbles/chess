@@ -16,4 +16,5 @@ bool isCheckMate(Piece * pieces[16], Piece* board[8][8]);
 void userWin(Piece * whitePieces[16], Piece* blackPieces[16], Piece* board[8][8]);
 void userLoss(Piece * whitePieces[16], Piece* blackPieces[16], Piece* board[8][8]);
 void gameStalemate(Piece * whitePieces[16], Piece* blackPieces[16], Piece* board[8][8]);
+bool onlyKingLeft(Piece* pieces[16]);
 #endif

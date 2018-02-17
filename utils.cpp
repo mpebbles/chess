@@ -18,6 +18,14 @@ bool isCheckMate(Piece * pieces[16], Piece* board[8][8])
     return false;
 }
 
+bool onlyKingLeft(Piece * pieces[16])
+{
+    for(int i = 1; i < 16; ++i)
+        if(pieces[i]->isAlive)
+            return false;
+    return true;
+}
+
 void getAnswer(Piece* whitePieces[16], Piece* blackPieces[16], Piece* board[8][8])
 {
     std::string user_ans;

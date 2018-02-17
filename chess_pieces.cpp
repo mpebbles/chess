@@ -7,6 +7,7 @@
 //    checkKingSafe() is testing for pieces being able to attack King
 //    when true piece won't be moved
 bool checking_move = false;
+bool checkingKingMove = false;
 
 Piece::Piece(char s, char t, int r, int c): isAlive(true)
 {
@@ -53,6 +54,20 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
         this->col = old_col;
         return false;
     }
+    // King is able to move
+    if(checkingKingMove) {
+        board[old_row][old_col] = this;
+        if(cap_piece_ref != nullptr) {
+            board[dest_row][dest_col] = cap_piece_ref;
+            cap_piece_ref->isAlive = true;
+        }
+        else
+            board[dest_row][dest_col] = nullptr;
+        this->row = old_row;
+        this->col = old_col;
+        checkingKingMove = false;
+        return true;
+    }
     // if execution gets here, move is valid
    if(is_user_turn and user_in_check) user_in_check = false; 
    if(!is_user_turn and computer_in_check) computer_in_check = false;
@@ -62,10 +77,27 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
 // returns std::make_pair(-1, -1) if no valid move found
 std::pair<int, int> Piece::findKingMove(Piece* board[8][8])
 {
-    // ...
-    // check not vulnerable in new spot if one exists
-    // try moving, check isSafe(), move back if not for all 8 possbile moves
-    return std::make_pair(0, -1);
+    checkingKingMove = true;
+    if(this->move(this->row - 1, this->col - 1, board))
+        return std::make_pair(this->row - 1, this->col - 1);
+    else if(this->move(this->row - 1, this->col, board))
+        return std::make_pair(this->row - 1, this->col);
+    else if(this->move(this->row - 1, this->col + 1, board))
+        return std::make_pair(this->row - 1, this->col + 1);
+    else if(this->move(this->row, this->col - 1, board))
+        return std::make_pair(this->row, this->col - 1);
+    else if(this->move(this->row, this->col + 1, board))
+        return std::make_pair(this->row, this->col + 1);
+    else if(this->move(this->row + 1, this->col - 1, board))
+        return std::make_pair(this->row + 1, this->col - 1);
+    else if(this->move(this->row + 1, this->col, board))
+        return std::make_pair(this->row + 1, this->col);
+    else if(this->move(this->row + 1, this->col + 1, board))
+        return std::make_pair(this->row + 1, this->col + 1);
+    else {
+        checkingKingMove = false;
+        return std::make_pair(-1, -1);
+    }
 }
 
 bool Piece::checkKingSafe(Piece* board[8][8])
