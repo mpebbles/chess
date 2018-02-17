@@ -9,13 +9,121 @@ int threat_row, threat_col;
 
 bool isCheckMate(Piece * pieces[16], Piece* board[8][8])
 {
-    // ...
-    // check which sides turn it is
+    // since calls may change values of threat_row and threat_col
+    int threat_row1 = threat_row; 
+    int threat_col1 = threat_col;
+    checking_move2 = true;
     // 1. check if threat can be taken out
-    // 2. check if king can move
-    // 3. check if piece can block check 
-    //      -- only if attack piece is != k, p, K
-    return false;
+    for(int i = 0; i < 16; ++i) {
+        // if threat can be taken out
+        if(pieces[i]->move(threat_row1, threat_col1, board)) {
+            checking_move2 = false;
+            return false;
+        }
+    }
+    checking_move2 = false;
+    // 2. check if King can move
+    int temp_k_move_row, temp_k_move_col;
+    std::tie(temp_k_move_row, temp_k_move_col) = pieces[0]->findKingMove(board);
+    // king can move out of check
+    if(temp_k_move_row != -1 or temp_k_move_col != - 1) return false;
+
+    // 3. piece can block check?
+    if(board[threat_row1][threat_col1]->type != 'k' and
+       board[threat_row1][threat_col1]->type != 'K' and
+       board[threat_row1][threat_col1]->type !='p') {
+        checking_move2 = true;
+        // +/-1's used since this is for blocking -- there must be a space between
+        // check up left diag
+        if(threat_row1 > pieces[0]->row + 1 and threat_col1 > pieces[0]->col - 1) {
+            for(int i = 1; i + pieces[0]->row + 1 < threat_row; ++i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row + i,pieces[0]->col - i, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check up
+        else if(threat_row1 > pieces[0]->row + 1 and threat_col1 == pieces[0]->col) {
+            for(int i = 1; i + pieces[0]->row + 1 < threat_row; ++i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row + i,pieces[0]->col, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check up right diag
+        else if(threat_row1 > pieces[0]->row + 1 and threat_col1 > pieces[0]->col + 1) {
+            for(int i = 1; i + pieces[0]->row + 1 < threat_row; ++i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row + i,pieces[0]->col + i, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check left
+        else if(threat_row1 == pieces[0]->row and threat_col1 < pieces[0]->col - 1) {
+            for(int i = -1; i + pieces[0]->col > threat_row + 1; --i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row,pieces[0]->col + i, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check right
+        else if(threat_row1 == pieces[0]->row and threat_col1 > pieces[0]->col + 1) {
+            for(int i = 1; i + pieces[0]->col + 1 < threat_col; ++i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row,pieces[0]->col + i, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check diag down left
+        else if(threat_row1 < pieces[0]->row - 1 and threat_col1 < pieces[0]->col - 1) {
+            for(int i = -1; i + pieces[0]->col > threat_col + 1; --i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row + i,pieces[0]->col + i, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check down
+        else if(threat_row1 < pieces[0]->row - 1 and threat_col1 == pieces[0]->col) {
+            for(int i = -1; i + pieces[0]->row > threat_row + 1; --i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row + i,pieces[0]->col, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        }
+        // check diag down right
+        else if(threat_row1 < pieces[0]->row - 1 and threat_col1 > pieces[0]->col + 1) {
+            for(int i = -1; i + pieces[0]->row > threat_row + 1; --i) {
+                for(int j = 1; j < 16; ++j) {
+                    if(pieces[j]->move(pieces[0]->row + i,pieces[0]->col - i, board)) {
+                        checking_move2 = false;
+                        return false;
+                    }
+                }
+            }
+        } 
+    } 
+    return true;
 }
 
 bool onlyKingLeft(Piece * pieces[16])

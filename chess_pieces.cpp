@@ -7,6 +7,7 @@
 //    checkKingSafe() is testing for pieces being able to attack King
 //    when true piece won't be moved
 bool checking_move = false;
+bool checking_move2 = false;
 bool checkingKingMove = false;
 
 Piece::Piece(char s, char t, int r, int c): isAlive(true)
@@ -39,10 +40,22 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
     board[dest_row][dest_col] = this;
     board[old_row][old_col] = nullptr;
     this->row = dest_row;
-    this->col = dest_row;
-
+    this->col = dest_col;
+    // if piece is king, place first
+    if(this->type == 'K' and !this->isSafe(board)) {
+        board[old_row][old_col] = this;
+        if(cap_piece_ref != nullptr) {
+            board[dest_row][dest_col] = cap_piece_ref;
+            cap_piece_ref->isAlive = true;
+        }
+        else
+            board[dest_row][dest_col] = nullptr;
+        this->row = old_row;
+        this->col = old_col;
+        return false;
+    }
     // check safety of mover's king
-    if(!checkKingSafe(board)) {
+    else if(!checkKingSafe(board)) {
         board[old_row][old_col] = this;
         if(cap_piece_ref != nullptr) {
             board[dest_row][dest_col] = cap_piece_ref;
@@ -54,7 +67,7 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
         this->col = old_col;
         return false;
     }
-    // King is able to move
+    // King is able to move (not actually moving yet)
     if(checkingKingMove) {
         board[old_row][old_col] = this;
         if(cap_piece_ref != nullptr) {
@@ -66,6 +79,20 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
         this->row = old_row;
         this->col = old_col;
         checkingKingMove = false;
+        return true;
+    }
+    // checking piece move (2nd option)
+    // for checking if valid move while in check
+    if(checking_move2) {
+        board[old_row][old_col] = this; 
+        if(cap_piece_ref != nullptr) {
+            board[dest_row][dest_col] = cap_piece_ref;
+            cap_piece_ref->isAlive = true;
+        }   
+        else
+            board[dest_row][dest_col] = nullptr;
+        this->row = old_row;
+        this->col = old_col;
         return true;
     }
     // if execution gets here, move is valid
@@ -207,7 +234,9 @@ bool Piece::isSafe(Piece* board[8][8])
         for(int j = 0; j < 7; ++j) {
             if(board[i][j] != nullptr and
                board[i][j]->side != this->side) {
-                if(board[i][j]->move(this->row, this->col, board)) {
+                // to make moving King 2 from enemy pawn valid move
+                if(board[i][j]->type == 'p' and abs(board[i][j]->row - this->row) == 2) {}
+                else if(board[i][j]->move(this->row, this->col, board)) {
                     checking_move = false;
                     // extern vars
                     threat_row = i;
@@ -216,7 +245,7 @@ bool Piece::isSafe(Piece* board[8][8])
                     return false;
                 }   
             }   
-        }   
+        }  
     checking_move = false;
     return true;
 }

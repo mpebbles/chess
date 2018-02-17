@@ -1,13 +1,5 @@
 TODO list
 **************
-immediate: checkMate, king possible moves, implement black side of this
-
-check for stalemate
-check for check
-check for checkmate
-
-print results of above/ask if wants to play again/reset or exit
-
 implement piece swapping for pawns--remember swap and reset piece to pawn at end
 implement computer side
 handle when user/computer in check -- verify resolved
@@ -19,7 +11,6 @@ handle when user/computer in check -- verify resolved
            //1. Doesn’t harm king
            //2. Can capture best piece
            //3. Just make valid move if needed
+           //4. get all possible moves, assign number, pick best move
     // call move on piece
-    // print board
-    // computer moves
-    // print out computer's move
+    // print out what computer did 

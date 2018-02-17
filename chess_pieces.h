@@ -1,6 +1,10 @@
 #ifndef __CHESS_PIECES__
 #define __CHESS_PIECES__
 
+extern bool checking_move;
+extern bool checking_move2;
+extern bool checkingKingMove;
+
 class Piece
 {
     public:

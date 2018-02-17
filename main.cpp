@@ -47,7 +47,8 @@ int main()
                           << "    being the piece's current position, and x2y2 being\n"
                           << "    the desired destination.\n"
                           << "To exit enter 'exit'.\n"
-                          << "To reset game enter 'reset'.\n" << std::endl;
+                          << "To reset game enter 'reset'.\n" 
+                          << "Please email any bugs to mitchell.jeffrey.pebbles@gmail.com\n" << std::endl;
             }
             // move 12,34
             else if(user_in.find("move") != std::string::npos and 
@@ -61,9 +62,11 @@ int main()
                 int dest_row = user_in.at(9) - '0' - 1;
                 int dest_col = user_in.at(8) - '0' - 1;
                 if(board[row][col] == nullptr or
-                   board[row][col]->side == 'b')
+                   board[row][col]->side == 'b') {
                    std::cout << "Invalid move." << std::endl;
+                }
                 else {
+                    checking_move = false; checkingKingMove = false; checking_move2 = false;
                     if(!board[row][col]->move(dest_row, dest_col, board)) {
                         std::cout << "Invalid move." << std::endl;
                         is_user_turn = true;
@@ -89,30 +92,50 @@ int main()
         // !is_user_turn is side that just went, check following before turn given
         // check for check, checkmate, stalemate
         if(!game_reset) {
-            if(is_user_turn and print_board) {
-                if(!whitePieces[0]->isSafe(board)) {
-                    // if exececution here, threat_row and threat_col have current vals
-                    // Check for checkmate
-                    // if checkmate reset game -- remember extra DS when implemented for piece swap
-                    if(isCheckMate(whitePieces, board)) {
-                        userLoss(whitePieces, blackPieces, board);
-                    } else {
-                        // if not checkmate
-                        user_in_check = true;
-                        // move function will check king safety -- move is invalid unless King safe
-                        std::cout << "Your King is in check. You must resolve this." << std::endl;
+            if(is_user_turn) {
+                if(print_board) {
+                    if(!whitePieces[0]->isSafe(board)) {
+                        // if exececution here, threat_row and threat_col have current vals
+                        // Check for checkmate
+                        // if checkmate reset game -- remember extra DS when implemented for piece swap
+                        if(isCheckMate(whitePieces, board)) {
+                            userLoss(whitePieces, blackPieces, board);
+                        } else {
+                            // if not checkmate
+                            user_in_check = true;
+                            // move function will check king safety -- move is invalid unless King safe
+                            std::cout << "Your King is in check. You must resolve this." << std::endl;
+                        }
                     }
-                }
-                // check for stalemate
-                if(onlyKingLeft(whitePieces)) {
-                    std::tie(k_move_row, k_move_col) = whitePieces[0]->findKingMove(board);
-                    if(k_move_row == -1 and k_move_col == -1)
-                        gameStalemate(whitePieces, blackPieces, board);
+                    // check for stalemate
+                    if(onlyKingLeft(whitePieces)) {
+                        std::tie(k_move_row, k_move_col) = whitePieces[0]->findKingMove(board);
+                        if(k_move_row == -1 and k_move_col == -1)
+                            gameStalemate(whitePieces, blackPieces, board);
+                    }
                 }
             }
             // check black side
             else {
-            // use logic from above, change needed vars/actions
+                    if(!blackPieces[0]->isSafe(board)) {
+                        // if exececution here, threat_row and threat_col have current vals
+                        // Check for checkmate
+                        // if checkmate reset game -- remember extra DS when implemented for piece swap
+                        if(isCheckMate(blackPieces, board)) {
+                            userWin(whitePieces, blackPieces, board);
+                        } else {
+                            // if not checkmate
+                            computer_in_check = true;
+                            // move function will check king safety -- move is invalid unless King safe
+                            std::cout << "You put the computer's King in check." << std::endl;
+                        }
+                    }
+                    // check for stalemate
+                    if(onlyKingLeft(blackPieces)) {
+                        std::tie(k_move_row, k_move_col) = blackPieces[0]->findKingMove(board);
+                        if(k_move_row == -1 and k_move_col == -1)
+                            gameStalemate(whitePieces, blackPieces, board);
+                    }
             }
         } else { game_reset = false; is_user_turn = true; }
     }
