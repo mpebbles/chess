@@ -10,6 +10,11 @@ int threat_row, threat_col;
 bool isCheckMate(Piece * pieces[16], Piece* board[8][8])
 {
     // ...
+    // check which sides turn it is
+    // 1. check if threat can be taken out
+    // 2. check if king can move
+    // 3. check if piece can block check 
+    //      -- only if attack piece is != k, p, K
     return false;
 }
 

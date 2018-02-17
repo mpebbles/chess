@@ -59,10 +59,12 @@ bool Piece::move(int dest_row, int dest_col, Piece* board[8][8])
    return true;
 }
 
+// returns std::make_pair(-1, -1) if no valid move found
 std::pair<int, int> Piece::findKingMove(Piece* board[8][8])
 {
     // ...
     // check not vulnerable in new spot if one exists
+    // try moving, check isSafe(), move back if not for all 8 possbile moves
     return std::make_pair(0, -1);
 }
 

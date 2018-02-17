@@ -1,5 +1,7 @@
 TODO list
 **************
+immediate: checkMate, king possible moves, implement black side of this
+
 check for stalemate
 check for check
 check for checkmate

@@ -110,14 +110,7 @@ int main()
             }
             // check black side
             else {
-                if(!blackPieces[0]->isSafe(board)) {
-                    // Check for checkmate
-                    // ...
-                    // if not checkmate
-                    computer_in_check = true;
-                }
-                // check for stalemate
-                // ...
+            // use logic from above, change needed vars/actions
             }
         } else { game_reset = false; is_user_turn = true; }
     }
