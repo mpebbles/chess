@@ -357,9 +357,11 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
                board[dest_row][dest_col] != nullptr)
                return false;
             if(this->row == 6 and this->row - 2 == dest_row and 
-                    (board[dest_row - 1][dest_col] != nullptr
-                     or board[dest_row -2][dest_col] !=nullptr))
-                return false;          
+                    (board[dest_row + 1][dest_col] != nullptr
+                     or board[dest_row][dest_col] !=nullptr))
+                return false;
+            if(this->row == 6 and dest_row == 4 and board[4][this->col] != nullptr)
+                return false;
         }
         // if diag by one check for opposite team's piece
         else if(this->col == dest_col - 1 or this->col == dest_col + 1) {
@@ -371,9 +373,8 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
         }
         // not forward or diag
         else {return false;}
-        // TODO: implement for black
         if(dest_row == 0)
-            std::cout << "Piece promotion not implemented yet" << std::endl;
+            promotePawn(this->col, board);
     }
     // white
     else {
@@ -384,8 +385,10 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
                board[dest_row][dest_col] != nullptr)
                return false;
             if(this->row == 1 and this->row + 2 == dest_row and 
-                    (board[dest_row + 1][dest_col] != nullptr
-                     or board[dest_row +2][dest_col] !=nullptr))
+                    (board[dest_row - 1][dest_col] != nullptr
+                     or board[dest_row][dest_col] !=nullptr))
+                return false;
+            if(this->row == 1 and dest_row == 3 and board[3][this->col] != nullptr) 
                 return false;          
         }
         // if diag by one check for opposite team's piece
@@ -399,11 +402,18 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
         // not forward or diag
         else {return false;}
        
-        // TODO: implement for white
         if(dest_row == 7)
-            std::cout << "Piece promotion not implemented yet" << std::endl;
+            promotePawn(this->col, board);
     }
     // call parent
     if(!Piece::move(dest_row, dest_col, board)) return false;
     return true;
 }
+
+Piece::~Piece(){}
+King::~King(){}
+Queen::~Queen(){}
+Bishop::~Bishop(){}
+Rook::~Rook(){}
+Knight::~Knight(){}
+Pawn::~Pawn(){}

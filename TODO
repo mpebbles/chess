@@ -1,6 +1,0 @@
-TODO list
-**************
-implement piece promotion for pawns
-   --remember promotion and reset piece to pawn at end
-implement intelligence
-   -- get all possible moves, assign value, pick best

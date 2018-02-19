@@ -6,6 +6,53 @@ bool is_user_turn;
 bool computer_in_check;
 bool user_in_check;
 int threat_row, threat_col;
+std::vector<Piece *> black_promotions;
+std::vector<Piece *> white_promotions;
+
+template<typename FwdIterator>
+void delete_promotions(FwdIterator a, FwdIterator b)
+{
+   while (a!=b) 
+   {
+       delete *a;
+       a++;
+   }
+}
+
+void promotePawn(int col, Piece * board[8][8])
+{
+    if(is_user_turn) {
+        std::cout << "What would you like to promote your pawn to? ('q','r','b','k'): ";
+        std::string user_ans;
+        std::getline(std::cin, user_ans);
+        while(user_ans.at(0) != 'q' and user_ans.at(0) != 'r' and user_ans.at(0) != 'b'
+              and user_ans.at(0) != 'k') {
+            std::cout << "Invalid input. What would you like to promote your pawn to?";
+            std::getline(std::cin, user_ans);
+        }
+        if(user_ans.at(0) == 'q') {
+            board[7][col] = new Queen('w',7,col);
+            white_promotions.push_back(board[7][col]);
+        }
+        else if(user_ans.at(0) == 'r') {
+            board[7][col] = new Rook('w',7,col);
+            white_promotions.push_back(board[7][col]);
+        }
+        else if(user_ans.at(0) == 'b') {
+            board[7][col] = new Bishop('w',7,col);
+            white_promotions.push_back(board[7][col]);
+        }
+        else if(user_ans.at(0) == 'k') {
+            board[7][col] = new Knight('w',7,col);
+            white_promotions.push_back(board[7][col]);
+        }
+        
+    }
+    else {
+       board[0][col] = new Queen('b',0,col);
+       black_promotions.push_back(board[0][col]);
+    }
+}
 
 bool isCheckMate(Piece * pieces[16], Piece* board[8][8])
 {
@@ -245,6 +292,14 @@ void resetGame(Piece* board[8][8], Piece* whitePieces[16], Piece* blackPieces[16
         for(int j = 0; j < 8; ++j)
             board[i][j] = nullptr;
 
+    if(black_promotions.size() != 0) {
+        delete_promotions(black_promotions.begin(), black_promotions.end());
+        black_promotions.clear();
+    }
+    if(white_promotions.size() != 0) {
+        delete_promotions(white_promotions.begin(), white_promotions.end());
+        white_promotions.clear();
+    }
     // white
 
     board[1][0] = whitePieces[15];
