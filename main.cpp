@@ -20,8 +20,8 @@ int main()
     //    
     //    Order: K q r r b b k k p p p p p p p p 
 
-    Piece * whitePieces[16];
-    Piece * blackPieces[16];
+    //Piece * whitePieces[16];
+    //Piece * blackPieces[16];
     initGame(board, whitePieces, blackPieces);
     std::cout << "********************************************" << std::endl;
     std::cout << "Welcome! Enter 'help' for info and commands." << std::endl; 

@@ -349,6 +349,7 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
     if(!checkBounds(dest_row, dest_col)) return false;
     // black
     if(this->side=='b') {
+        if(this->row != 6 and abs(this->row - dest_row) > 1) return false;
         // forward 1 or 2 if same col
         if(this->col == dest_col) {
             if(this->row - 1 != dest_row and this->row - 2 != dest_row)
@@ -378,6 +379,7 @@ bool Pawn::move(int dest_row, int dest_col, Piece* board[8][8])
     }
     // white
     else {
+        if(this->row != 1 and abs(this->row - dest_row) > 1) return false;
         if(this->col == dest_col) {
             if(this->row + 1 != dest_row and this->row + 2 != dest_row)
                 return false;
